@@ -1,0 +1,77 @@
+/*
+ * <p>
+ * Copyright: Copyright (c) 2018-08-08 15:28
+ * <p>
+ * Company: 武汉斑马快跑
+ * <p>
+ *
+ * @author tongyongjian
+ * @email tongyongjian@bmkp.cn
+ * @version 1.0.0
+ */
+
+package com.john.query;
+
+import com.john.analyzer.ik.IKAnalyzer4Lucene7;
+import com.john.common.Common;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * Lucene 基础查询
+ *
+ * @author tongyongjian
+ * @date 2018/8/8
+ */
+public class QueryDemo1 {
+
+    public static void main(String[] args) throws IOException, ParseException {
+        // 1. 创建分词器
+        Analyzer analyzer = new IKAnalyzer4Lucene7(true);
+
+        // 2. 打开索引存储目录
+        Directory directory = FSDirectory.open(new File(Common.LUCENE_DB_DIR).toPath());
+
+        // 3. 索引读取器
+        IndexReader reader = DirectoryReader.open(directory);
+
+        // 4. 索引搜索器
+        IndexSearcher searcher = new IndexSearcher(reader);
+
+        // 5. 要查询的字段
+        String fieldName = "name";
+
+        // 6. 查询生成器
+        QueryParser parser = new QueryParser(fieldName, analyzer);
+
+        // 7. 解析输入生成查询对象
+        Query query = parser.parse("ThinkPad");
+
+        // 8. 搜索，得到TopN的结果（结果中有命中总数，topN的scoreDocs（评分文档（文档id，评分）））
+        TopDocs docs = searcher.search(query, 10);
+
+        System.out.println("总命中数为 : " + docs.totalHits);
+
+        for(ScoreDoc tmp : docs.scoreDocs) {
+            Document hitDoc = searcher.doc(tmp.doc);
+            System.out.println("命中文档 : " + hitDoc.get(fieldName));
+        }
+
+        // 关闭资源
+        reader.close();
+        directory.close();
+    }
+}

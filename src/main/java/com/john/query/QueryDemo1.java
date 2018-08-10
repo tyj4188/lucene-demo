@@ -61,10 +61,12 @@ public class QueryDemo1 {
         Query query = parser.parse("ThinkPad");
 
         // 8. 搜索，得到TopN的结果（结果中有命中总数，topN的scoreDocs（评分文档（文档id，评分）））
+        // 这里获取的是所有反向索引中的 docId
         TopDocs docs = searcher.search(query, 10);
 
         System.out.println("总命中数为 : " + docs.totalHits);
 
+        // 遍历反向索引数据，通过 docId 查询数据
         for(ScoreDoc tmp : docs.scoreDocs) {
             Document hitDoc = searcher.doc(tmp.doc);
             System.out.println("命中文档 : " + hitDoc.get(fieldName));

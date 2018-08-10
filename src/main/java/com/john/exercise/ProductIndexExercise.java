@@ -13,6 +13,7 @@
 package com.john.exercise;
 
 import com.john.analyzer.ik.IKAnalyzer4Lucene7;
+import com.john.common.Common;
 import com.john.field.IntField;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -57,7 +58,7 @@ public class ProductIndexExercise {
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 
         try(
-                Directory dir = FSDirectory.open(new File("/Users/tongyongjian/Documents/ProgramFiles/LuceneDatabase").toPath());
+                Directory dir = FSDirectory.open(new File(Common.LUCENE_DB_DIR).toPath());
                 IndexWriter writer = new IndexWriter(dir, config);
                 ) {
             Document doc = new Document();

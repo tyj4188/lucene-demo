@@ -39,9 +39,9 @@ import java.io.IOException;
  */
 public class ProductIndexExercise {
     public static void main(String[] args) {
-        String prodId = "p0001";
+        String prodId = "p0002";
 
-        String name = "ThinkPad X1 Carbon 20KH0009CD/25CD 超极本轻薄笔记本电脑";
+        String name = "ThinkPad X1 Carbon 20KH0009CD/25CD 超极本轻薄联想笔记本";
 
         String imgUrl = "http://www.dongnao.com/aaa";
 
@@ -51,7 +51,7 @@ public class ProductIndexExercise {
 
         String[] types = new String[]{"电脑", "笔记本电脑"};
 
-        int price = 999900; // 价格 - 单位: 分
+        int price = 1111100; // 价格 - 单位: 分
 
         Analyzer analyzer = new IKAnalyzer4Lucene7(true);
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
